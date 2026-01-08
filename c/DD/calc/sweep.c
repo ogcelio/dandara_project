@@ -84,7 +84,7 @@ calc_backward(
             {
                 psi[node][m] = ((fabs(mi_h[m]) - half_sigma_t) * psi[node + 1][m] + SS[node] + Q[reg])
                                 /
-                                (mi_h[m] + half_sigma_t);
+                                (fabs(mi_h[m]) + half_sigma_t);
             }
         }
     }
