@@ -1,5 +1,9 @@
 void
-calc_psim(int N, int TOTAL_NODES, double psi[TOTAL_NODES + 1][N], double psim[TOTAL_NODES + 1][N])
+calc_psim(
+    int N,
+    int TOTAL_NODES,
+    double psi[TOTAL_NODES + 1][N],
+    double psim[TOTAL_NODES + 1][N])
 {
     int j, m;
     for (m = 0; m < N; m++)
