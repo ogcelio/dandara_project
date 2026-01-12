@@ -37,11 +37,13 @@ init_mi_h(
 {
     int i, m;
 
+    double inv_h;
     for (i = 0; i < NUM_REGS; i++)
     {
+        inv_h = 1.0 / H[i];
         for (m = 0; m < N; m++)
         {
-            mi_h[i][m] = MI[m] / H[i];
+            mi_h[i][m] = MI[m] * inv_h;
         }
     }
 }

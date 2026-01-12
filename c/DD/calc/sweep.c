@@ -18,14 +18,18 @@ calc_foward(
     for (i = 0; i < NUM_REGS; i++)
     {
         num_nodes = NUM_NODES[i];
+        double q_i = Q[i];
+        double st_i = HALF_SIGMA_T[i];
 
         for (j = 0; j < num_nodes; j++, node++)
         {
+            double ss_val = SS[node - 1];
             for (m = 0; m < HALF_N; m++)
             {
-                psi[node][m] = (SS[node - 1] + Q[i] + (MI_H[m] - HALF_SIGMA_T[i]) * psi[node - 1][m])
+                double mi_m = MI_H[m];
+                psi[node][m] = (ss_val + q_i + (mi_m - st_i) * psi[node - 1][m])
                                 /
-                                (MI_H[m] + HALF_SIGMA_T[i]);
+                                (mi_m + st_i);
             }
         }
     }
@@ -48,17 +52,21 @@ calc_backward(
     int i, j, m, num_nodes;
     int node = TOTAL_NODES - 1;
 
-    for (i = NUM_REGS; i > 0; i--)
+    for (i = NUM_REGS - 1; i >= 0; i--)
     {
         num_nodes = NUM_NODES[i];
+        double q_i = Q[i];
+        double st_i = HALF_SIGMA_T[i];
 
         for (j = 0; j < num_nodes; j++, node--)
         {
+            double ss_val = SS[node];
             for (m = HALF_N; m < N; m++)
             {
-                psi[node][m] = (SS[node] + Q[i] - (MI_H[m] + HALF_SIGMA_T[i]) * psi[node + 1][m])
+                double mi_m = MI_H[m];
+                psi[node][m] = (ss_val + q_i - (mi_m + st_i) * psi[node + 1][m])
                                 /
-                                (HALF_SIGMA_T[i] - MI_H[m]);
+                                (st_i - mi_m);
             }
         }
     }

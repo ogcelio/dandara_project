@@ -24,7 +24,7 @@ quadrature(int N, double MI[], double W[])
                 P1 = ((2.0 * j + 1.0) * u * P2 - j * P3) / (j + 1.0);
             }
 
-            DP = N * (u * P1 - P2) / (pow(u, 2) - 1.0);
+            DP = N * (u * P1 - P2) / (u * u - 1.0);
             u1 = u;
             u = u1 - (P1 / DP);
 
@@ -32,7 +32,7 @@ quadrature(int N, double MI[], double W[])
         }
 
         // Cálculo do peso associado a esta raiz
-        W[i - 1] = 2.0 / ((1.0 - pow(u, 2)) * pow(DP, 2));
+        W[i - 1] = 2.0 / ((1.0 - u * u) * (DP * DP));
         W[i - 1 + M] = W[i-1];
 
         MI[M - i] = u;

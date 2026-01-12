@@ -21,9 +21,9 @@ calc_abs_rate(
         sum = 0;
         for (j = 0; j < num_nodes; j++, node++)
         {
-            sum += sigma_a * AVG_FI[node] * H[i];
+            sum += AVG_FI[node];
         }
 
-        abs_rate[i] = sum;
+        abs_rate[i] = sum * sigma_a * H[i];
     }
 }
