@@ -1,20 +1,19 @@
-import numpy as np
 from time import perf_counter
 
-from python.quadrature.quadrature import quadrature
+from numpy import zeros
 
-from python.DD.calc.calc_psiM import calc_psiM
-from python.DD.calc.calc_foward import foward
-from python.DD.calc.calc_backward import backward
-from python.DD.calc.calc_ss import calc_ss
-
-from python.common.calc_fi import calc_fi
-from python.common.init_variables import init_psiX, init_hj
-from python.common.calc_dr import calc_dr
-from python.common.calc_sigmaA import calc_sigmaA
 from python.common.calc_abs_rate import calc_abs_rate
+from python.common.calc_dr import calc_dr
 from python.common.calc_escape_rate import calc_escape_rate
+from python.common.calc_fi import calc_fi
+from python.common.calc_sigmaA import calc_sigmaA
+from python.common.init_variables import init_hj, init_psiX
 from python.common.trivial_sol_test import trivial_sol
+from python.DD.calc.calc_backward import backward
+from python.DD.calc.calc_foward import foward
+from python.DD.calc.calc_psiM import calc_psiM
+from python.DD.calc.calc_ss import calc_ss
+from python.quadrature import quadrature
 
 
 def diamond_difference(
@@ -37,7 +36,10 @@ def diamond_difference(
     initial_time = perf_counter()
 
     # ETAPA INICIALIZACAO DE VARIAVEIS
-    MI, W = quadrature(N)
+    MI = zeros(N)
+    W = zeros(N)
+
+    quadrature(N, MI, W)
     NNT = sum(NN)
 
     psi = init_psiX(N, NNT, CCE, CCD)
@@ -47,11 +49,11 @@ def diamond_difference(
 
     if trivial_sol(Q, CCE, CCD, NUM_REGS):
         # Arredondando fi_final
-        initial_fi = np.zeros(NNT + 1)
+        initial_fi = zeros(NNT + 1)
 
         # Arredondando psi
-        abs_rate = np.zeros(NUM_REGS)
-        escape_rate = np.zeros(2)
+        abs_rate = zeros(NUM_REGS)
+        escape_rate = zeros(2)
 
         # Coletando Tempo final
         final_time = perf_counter()

@@ -1,22 +1,21 @@
 from time import perf_counter
+
 from numpy import zeros
 
-from python.quadrature.quadrature import quadrature
-
-from python.common.init_variables import init_psiX, init_hj, init_C0j
-from python.common.trivial_sol_test import trivial_sol
-from python.common.calc_fi import calc_fi
-from python.common.calc_dr import calc_dr
-from python.common.calc_sigmaA import calc_sigmaA
 from python.common.calc_abs_rate import calc_abs_rate
+from python.common.calc_dr import calc_dr
 from python.common.calc_escape_rate import calc_escape_rate
-
+from python.common.calc_fi import calc_fi
+from python.common.calc_sigmaA import calc_sigmaA
+from python.common.init_variables import init_C0j, init_hj, init_psiX
+from python.common.trivial_sol_test import trivial_sol
+from python.MSD.calc.calc_alfa import calc_alfa
 from python.MSD.calc.calc_eigen import calc_eigen
 from python.MSD.calc.calc_part_sol import calc_part_sol
-from python.MSD.calc.calc_alfa import calc_alfa
+from python.MSD.calc.calc_psi import calc_psi
 from python.MSD.calc.calc_psiM import calc_psiM
 from python.MSD.calc.calc_ss import calc_ss
-from python.MSD.calc.calc_psi import calc_psi
+from python.quadrature import quadrature
 
 
 def msd(
@@ -39,7 +38,11 @@ def msd(
     INITIAL_TIME = perf_counter()
 
     # INICIALIZANDO VARIÁVEIS
-    MI, W = quadratura(N)
+    MI = zeros(N)
+    W = zeros(N)
+
+    quadrature(N, MI, W)
+
     TOTAL_NODES = sum(NUM_NODES)
     psi = init_psiX(N, TOTAL_NODES, CCE, CCD)
     H = init_hj(NUM_NODES, NUM_REGS, ESP_REGS)
