@@ -1,5 +1,10 @@
 void
-calc_fi(int N, int TOTAL_NODES, double W[N], double psi[TOTAL_NODES + 1][N], double fi[TOTAL_NODES + 1])
+calc_fi(
+    int N,
+    int TOTAL_NODES,
+    double W[N],
+    double psi[TOTAL_NODES + 1][N],
+    double fi[TOTAL_NODES + 1])
 {
     double sum;
     int j, m;

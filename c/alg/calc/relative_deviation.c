@@ -1,7 +1,10 @@
 #include <math.h>
 
 double
-relative_deviation(int TOTAL_NODES, double initial_fi[], double final_fi[])
+relative_deviation(
+    int TOTAL_NODES,
+    double initial_fi[],
+    double final_fi[])
 {
     double result_higher = fabs(initial_fi[0] - final_fi[0]);
     double final_higher = fabs(final_fi[0]);
