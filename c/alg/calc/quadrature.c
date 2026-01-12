@@ -2,7 +2,7 @@
 #include <math.h>
 
 void
-quadrature(int N, double MI[], double W[])
+calc_quadrature(int N, double MI[], double W[])
 {
     int M = N / 2; // Metade do vetor
     int i, j;
