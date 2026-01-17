@@ -71,3 +71,17 @@ init_half_sigma_s0(
         half_sigma_s0[i] = SIGMA_S0[i] / 2;
     }
 }
+
+int
+init_total_nodes(
+    int NUM_REGS,
+    int NUM_NODES[NUM_REGS])
+{
+    int sum = 0;
+    for (int i = 0; i < NUM_REGS; i++)
+    {
+        sum += NUM_NODES[i];
+    }
+
+    return sum;
+}

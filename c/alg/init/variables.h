@@ -32,4 +32,8 @@ void init_half_sigma_s0(
     double SIGMA_S0[],
     double half_sigma_s0[]);
 
+int init_total_nodes(
+    int NUM_REGS,
+    int NUM_NODES[]);
+
 #endif
