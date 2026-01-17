@@ -3,12 +3,13 @@
 
 void calc_ss(
     int N,
+    int TOTAL_NODES,
     int NUM_REGS,
     int REGS[],
     int NUM_NODES[],
     double W[],
     double HALF_SIGMA_S0[],
-    double psim[],
+    double psim[][N],
     double ss[]);
 
 #endif

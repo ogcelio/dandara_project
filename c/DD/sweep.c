@@ -6,10 +6,10 @@ calc_foward(
     int NUM_REGS,
     int NUM_NODES[],
     int REGS[NUM_REGS],
-    double SS[TOTAL_NODES],
     double Q[NUM_REGS],
     double HALF_SIGMA_T[NUM_REGS],
-    double MI_H[NUM_REGS],
+    double MI_H[NUM_REGS][N],
+    double SS[TOTAL_NODES],
     double psi[TOTAL_NODES + 1][N])
 {
     int i, j, m, num_nodes;
@@ -26,7 +26,7 @@ calc_foward(
             double ss_val = SS[node - 1];
             for (m = 0; m < HALF_N; m++)
             {
-                double mi_m = MI_H[m];
+                double mi_m = MI_H[i][m];
                 psi[node][m] = (ss_val + q_i + (mi_m - st_i) * psi[node - 1][m])
                                 /
                                 (mi_m + st_i);
@@ -41,12 +41,12 @@ calc_backward(
     int HALF_N,
     int TOTAL_NODES,
     int NUM_REGS,
-    int NUM_NODES[],
-    int REGS[],
-    double SS[],
-    double Q[],
-    double HALF_SIGMA_T[],
-    double MI_H[],
+    int NUM_NODES[NUM_REGS],
+    int REGS[NUM_REGS],
+    double Q[NUM_REGS],
+    double HALF_SIGMA_T[NUM_REGS],
+    double MI_H[NUM_REGS][N],
+    double SS[TOTAL_NODES],
     double psi[TOTAL_NODES + 1][N])
 {
     int i, j, m, num_nodes;
@@ -63,7 +63,7 @@ calc_backward(
             double ss_val = SS[node];
             for (m = HALF_N; m < N; m++)
             {
-                double mi_m = MI_H[m];
+                double mi_m = MI_H[i][m];
                 psi[node][m] = (ss_val + q_i - (mi_m + st_i) * psi[node + 1][m])
                                 /
                                 (st_i - mi_m);
