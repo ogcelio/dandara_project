@@ -1,3 +1,4 @@
+#include "relative_deviation.h"
 #include <math.h>
 
 double

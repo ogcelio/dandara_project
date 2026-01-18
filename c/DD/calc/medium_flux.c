@@ -1,9 +1,11 @@
+#include "medium_flux.h"
+
 void
 calc_psim(
     int N,
     int TOTAL_NODES,
     double psi[TOTAL_NODES + 1][N],
-    double psim[TOTAL_NODES + 1][N])
+    double psim[TOTAL_NODES][N])
 {
     int j, m;
 

@@ -1,3 +1,5 @@
+#include "scalar_flux.h"
+
 void
 calc_fi(
     int N,

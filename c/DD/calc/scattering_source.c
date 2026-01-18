@@ -1,3 +1,5 @@
+#include "scattering_source.h"
+
 void
 calc_ss(
     int N,
@@ -10,14 +12,14 @@ calc_ss(
     double psim[TOTAL_NODES][N],
     double ss[TOTAL_NODES])
 {
-    double sum;
+    double sum, half_sigma_s0;
     int i, j, n, num_nodes;
     int node = 0;
 
     for (i = 0; i < NUM_REGS; i++)
     {
         num_nodes = NUM_NODES[i];
-        double sigma_s = HALF_SIGMA_S0[i];
+        half_sigma_s0 = HALF_SIGMA_S0[i];
         for (j = 0; j < num_nodes; j++, node++)
         {
             sum = 0;
@@ -26,7 +28,7 @@ calc_ss(
                 sum += W[n] * psim[node][n];
             }
 
-            ss[node] = sigma_s * sum;
+            ss[node] = half_sigma_s0 * sum;
         }
     }
 }

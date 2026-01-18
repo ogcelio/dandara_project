@@ -1,3 +1,5 @@
+#include "variables.h"
+
 void
 init_psi(
     int N,
@@ -56,7 +58,7 @@ init_half_sigma_t(
 {
     for (int i = 0; i < NUM_REGS; i++)
     {
-        half_sigma_t[i] = SIGMA_T[i] / 2;
+        half_sigma_t[i] = SIGMA_T[i] * 0.5;
     }
 }
 
@@ -68,7 +70,7 @@ init_half_sigma_s0(
 {
     for (int i = 0; i < NUM_REGS; i++)
     {
-        half_sigma_s0[i] = SIGMA_S0[i] / 2;
+        half_sigma_s0[i] = SIGMA_S0[i] * 0.5;
     }
 }
 

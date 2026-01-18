@@ -5,38 +5,92 @@
     SANDER, J. C. A. - 2026
 */
 
-// COMMON ALGORITHMS
-#include "alg/calc/absorption_rate.h"
-#include "alg/calc/escape_rate.h"
-#include "alg/calc/quadrature.h"
-#include "alg/calc/relative_deviation.h"
-#include "alg/calc/scalar_flux.h"
-#include "alg/calc/trival_solution_test.h"
+//HEADER
+#include "diamond_difference.h"
 
-#include "alg/init/variables.h"
+// COMMON ALGORITHMS
+#include <string.h>
+
+#include "../alg/calc/absorption_rate.h"
+#include "../alg/calc/escape_rate.h"
+#include "../alg/calc/quadrature.h"
+#include "../alg/calc/relative_deviation.h"
+#include "../alg/calc/scalar_flux.h"
+#include "../alg/calc/trival_solution_test.h"
+
+#include "../alg/init/variables.h"
+
+#include "../alg/json/file_ops.h"
 
 // DD ALGORITHMS
-#include "DD/medium_flux.h"
-#include "DD/scattering_source.h"
-#include "DD/sweep.h"
+#include "calc/medium_flux.h"
+#include "calc/scattering_source.h"
+#include "calc/sweep.h"
 
 int
-diamond_difference(
-    int N,
-    int NUM_REGS,
-    int REGS[NUM_REGS],
-    int NUM_NODES[NUM_REGS],
-    double CCE,
-    double CCD,
-    double PREC,
-    double Q[NUM_REGS],
-    double SIGMA_T[NUM_REGS],
-    double SIGMA_S0[NUM_REGS],
-    double ESP_REGS[NUM_REGS])
+diamond_difference(char* DATA_PATH, char* OUTPUT_PATH)
 {
+    // IMPORTING SIMULATION DATA
+    IMPORT_DATA(
+        DATA_PATH,
+        N,
+        NUM_REGS,
+        CCE,
+        CCD,
+        PREC,
+        REGS,
+        NUM_NODES,
+        Q,
+        SIGMA_T,
+        SIGMA_S0,
+        ESP_REGS);
+
+    // TRIVIAL SOLUTION TEST
+    if (trivial_solution_test(NUM_REGS, REGS, CCE, CCD, Q))
+    {
+        // INITIALING CONST WITH 0s
+        unsigned TOTAL_NODES = init_total_nodes(NUM_REGS, NUM_NODES);
+
+        double ESCAPE_RATE[2] = {0};
+
+        double ABS_RATE[NUM_REGS];
+        memset(ABS_RATE, 0, sizeof(ABS_RATE));
+
+        double PSI[TOTAL_NODES][N];
+        memset(PSI, 0, sizeof(PSI));
+        init_psi(N, N / 2, TOTAL_NODES, CCE, CCD, PSI);
+
+        double FINAL_FI[TOTAL_NODES + 1];
+        memset(FINAL_FI, 0, sizeof(FINAL_FI));
+
+        // SAVING OUTPUT
+        SAVE_OUTPUT(
+            OUTPUT_PATH,
+            N,
+            0,
+            TOTAL_NODES,
+            NUM_REGS,
+            FINAL_FI,
+            ABS_RATE,
+            ESCAPE_RATE,
+            PSI);
+
+        return 1;
+    }
+
     // INITIALIZING CONSTANTS
     double MI[N], W[N];
     calc_quadrature(N, MI, W);
+
+    for (int i = 0; i < N; i++)
+    {
+        printf("%f\n", MI[i]);
+    }
+    printf("\n\n\n");
+    for (int i = 0; i < N; i++)
+    {
+        printf("%f\n", W[i]);
+    }
 
     unsigned TOTAL_NODES = init_total_nodes(NUM_REGS, NUM_NODES);
 
@@ -58,6 +112,7 @@ diamond_difference(
     int iteration = 0;
 
     double psi[TOTAL_NODES + 1][N];
+    memset(psi, 0, sizeof(psi));
     init_psi(N, HALF_N, TOTAL_NODES, CCE, CCD, psi);
 
     double psim[TOTAL_NODES][N];
@@ -67,11 +122,6 @@ diamond_difference(
 
     double ss[TOTAL_NODES];
 
-    // TRIVIAL SOLUTION TEST
-    if (!trivial_solution_test(NUM_REGS, REGS, CCE, CCD, Q))
-    {
-        return 1;
-    }
 
     // MAIN ROUTINE
     while (1)
@@ -156,6 +206,18 @@ diamond_difference(
     // ESCAPE RATE
     double ESCAPE_RATE[2];
     calc_escape_rate(N, HALF_N, TOTAL_NODES, MI, W, psi, ESCAPE_RATE);
+
+    // SAVING OUTPUT
+    SAVE_OUTPUT(
+        OUTPUT_PATH,
+        N,
+        iteration,
+        TOTAL_NODES,
+        NUM_REGS,
+        final_fi,
+        ABS_RATE,
+        ESCAPE_RATE,
+        psi);
 
     return 0;
 }

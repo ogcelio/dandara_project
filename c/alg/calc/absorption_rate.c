@@ -1,3 +1,5 @@
+#include "absorption_rate.h"
+
 void
 calc_abs_rate(
     int NUM_NODES[],
