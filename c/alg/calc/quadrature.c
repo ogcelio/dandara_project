@@ -1,4 +1,5 @@
-#define _USER_MATH_DEFINES
+#define _USE_MATH_DEFINES
+#include "quadrature.h"
 #include <math.h>
 
 void
@@ -24,6 +25,7 @@ calc_quadrature(int N, double MI[], double W[])
                 P1 = ((2.0 * j + 1.0) * u * P2 - j * P3) / (j + 1.0);
             }
 
+            // Derivada do polinômio de Legendre
             DP = N * (u * P1 - P2) / (u * u - 1.0);
             u1 = u;
             u = u1 - (P1 / DP);
@@ -31,11 +33,13 @@ calc_quadrature(int N, double MI[], double W[])
             if (fabs(u - u1) < 1e-15) break;
         }
 
-        // Cálculo do peso associado a esta raiz
-        W[i - 1] = 2.0 / ((1.0 - u * u) * (DP * DP));
-        W[i - 1 + M] = W[i-1];
+        double peso = 2.0 / ((1.0 - u * u) * (DP * DP));
 
-        MI[M - i] = u;
-        MI[N - i] = -u;
+        // Atribui o peso e a raiz no mesmo índice
+        MI[M - i] = u;       // Raiz positiva
+        W[M - i]  = peso;    // Peso correspondente
+
+        MI[N - i] = -u;      // Raiz negativa
+        W[N - i]  = peso;    // Peso correspondente
     }
 }
