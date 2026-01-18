@@ -7,7 +7,7 @@ python3 quadrature.py
 # 2. Compilar e Executar C
 # É boa prática compilar antes de executar para garantir que a versão mais recente rode
 echo -e "\n--- Compilando e Executando C ---"
-gcc programa.c -o programa_c
+gcc c/main.c c/DD/diamond_difference.c c/alg/calc/*.c c/alg/init/variables.c c/alg/json/cJSON.c c/DD/calc/*.c -o main -lm
 if [ $? -eq 0 ]; then
     ./programa_c
 else
