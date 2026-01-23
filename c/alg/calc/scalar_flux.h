@@ -1,3 +1,10 @@
+/*
+    Minha fome vem da alma;
+    Meu machado é de Assis.
+
+    SANDER, J. C. A. - 2026
+*/
+
 #ifndef SCALAR_FLUX_H
 #define SCALAR_FLUX_H
 

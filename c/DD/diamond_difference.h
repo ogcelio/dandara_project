@@ -1,3 +1,10 @@
+/*
+    Minha fome vem da alma;
+    Meu machado é de Assis.
+
+    SANDER, J. C. A. - 2026
+*/
+
 #ifndef DIAMOND_DIFFERENCE_H
 #define DIAMOND_DIFFERENCE_H
 

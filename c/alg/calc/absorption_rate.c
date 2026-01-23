@@ -1,3 +1,10 @@
+/*
+    Minha fome vem da alma;
+    Meu machado é de Assis.
+
+    SANDER, J. C. A. - 2026
+*/
+
 #include "absorption_rate.h"
 
 void

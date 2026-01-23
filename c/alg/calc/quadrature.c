@@ -1,3 +1,10 @@
+/*
+    Minha fome vem da alma;
+    Meu machado é de Assis.
+
+    SANDER, J. C. A. - 2026
+*/
+
 #define _USE_MATH_DEFINES
 #include "quadrature.h"
 #include <math.h>

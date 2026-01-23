@@ -122,7 +122,6 @@ diamond_difference(char* DATA_PATH, char* OUTPUT_PATH)
 
     double ss[TOTAL_NODES];
 
-
     // MAIN ROUTINE
     while (1)
     {
