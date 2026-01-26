@@ -10,7 +10,7 @@
 int
 main(void)
 {
-    diamond_difference("data/input.json", "data/output.json");
+    diamond_difference("c/data/input.json", "c/data/output.json");
 
     return 0;
 }

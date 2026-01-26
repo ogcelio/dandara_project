@@ -37,35 +37,56 @@ init_h(
 }
 
 void
-init_mi_h(
+init_foward_flux_weight(
     int N,
+    int HALF_N,
     int NUM_REGS,
     double MI[N],
     double H[NUM_REGS],
-    double mi_h[NUM_REGS][N])
+    double SIGMA_T[NUM_REGS],
+    double ffw[NUM_REGS][N])
 {
-    int i, m;
+    int r, m;
+    double h_st, inv_h;
 
-    double inv_h;
-    for (i = 0; i < NUM_REGS; i++)
+    for (r = 0; r < NUM_REGS; r++)
     {
-        inv_h = 1.0 / H[i];
-        for (m = 0; m < N; m++)
+        h_st = 0.5 * SIGMA_T[r];
+        inv_h = 1 / H[r];
+
+        for (m = 0; m < HALF_N; m++)
         {
-            mi_h[i][m] = MI[m] * inv_h;
+            ffw[r][m] = h_st - MI[m] * inv_h;
+
+            ffw[r][m + HALF_N] = h_st + MI[m + HALF_N] * inv_h;
         }
     }
 }
 
 void
-init_half_sigma_t(
+init_backward_flux_weight(
+    int N,
+    int HALF_N,
     int NUM_REGS,
+    double MI[N],
+    double H[NUM_REGS],
     double SIGMA_T[NUM_REGS],
-    double half_sigma_t[NUM_REGS])
+    double bfw[NUM_REGS][N])
 {
-    for (int i = 0; i < NUM_REGS; i++)
+    int r, m;
+    double h_st, inv_h;
+
+    for (r = 0; r < NUM_REGS; r++)
     {
-        half_sigma_t[i] = SIGMA_T[i] * 0.5;
+        h_st = 0.5 * SIGMA_T[r];
+        inv_h = 1 / H[r];
+
+        for (m = 0; m < HALF_N; m++)
+        {
+            bfw[r][m] = 1 / (h_st + MI[m] * inv_h);
+
+            bfw[r][m + HALF_N] = 1 / (h_st - MI[m + HALF_N] * inv_h);
+        }
     }
 }
 
@@ -78,6 +99,19 @@ init_half_sigma_s0(
     for (int i = 0; i < NUM_REGS; i++)
     {
         half_sigma_s0[i] = SIGMA_S0[i] * 0.5;
+    }
+}
+
+void
+init_C0(
+    int NUM_REGS,
+    double SIGMA_T[NUM_REGS],
+    double SIGMA_S0[NUM_REGS],
+    double c0[NUM_REGS])
+{
+    for (int i = 0; i < NUM_REGS; i++)
+    {
+        c0[i] = SIGMA_T[i] / SIGMA_S0[i];
     }
 }
 

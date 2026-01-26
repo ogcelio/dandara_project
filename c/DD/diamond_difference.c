@@ -82,16 +82,6 @@ diamond_difference(char* DATA_PATH, char* OUTPUT_PATH)
     double MI[N], W[N];
     calc_quadrature(N, MI, W);
 
-    for (int i = 0; i < N; i++)
-    {
-        printf("%f\n", MI[i]);
-    }
-    printf("\n\n\n");
-    for (int i = 0; i < N; i++)
-    {
-        printf("%f\n", W[i]);
-    }
-
     unsigned TOTAL_NODES = init_total_nodes(NUM_REGS, NUM_NODES);
 
     unsigned HALF_N = N / 2;
@@ -99,14 +89,14 @@ diamond_difference(char* DATA_PATH, char* OUTPUT_PATH)
     double H[NUM_REGS];
     init_h(NUM_REGS, NUM_NODES, ESP_REGS, H);
 
-    double MI_H[NUM_REGS][N];
-    init_mi_h(N, NUM_REGS, MI, H, MI_H);
-
-    double HALF_SIGMA_T[NUM_REGS];
-    init_half_sigma_t(NUM_REGS, SIGMA_T, HALF_SIGMA_T);
-
     double HALF_SIGMA_S0[N];
     init_half_sigma_s0(NUM_REGS, SIGMA_S0, HALF_SIGMA_S0);
+
+    double FFW[NUM_REGS][N];
+    init_foward_flux_weight(N, HALF_N, NUM_REGS, MI, H, SIGMA_T, FFW);
+
+    double BFW[NUM_REGS][N];
+    init_backward_flux_weight(N, HALF_N, NUM_REGS, MI, H, SIGMA_T, BFW);
 
     // INITIALIZING VARIABLES
     int iteration = 0;
@@ -154,8 +144,8 @@ diamond_difference(char* DATA_PATH, char* OUTPUT_PATH)
             NUM_NODES,
             REGS,
             Q,
-            HALF_SIGMA_T,
-            MI_H,
+            FFW,
+            BFW,
             ss,
             psi);
 
@@ -168,8 +158,8 @@ diamond_difference(char* DATA_PATH, char* OUTPUT_PATH)
             NUM_NODES,
             REGS,
             Q,
-            HALF_SIGMA_T,
-            MI_H,
+            FFW,
+            BFW,
             ss,
             psi);
 

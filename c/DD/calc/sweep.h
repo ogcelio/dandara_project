@@ -16,8 +16,8 @@ void calc_foward(
     int NUM_NODES[],
     int REGS[],
     double Q[],
-    double HALF_SIGMA_T[],
-    double MI_H[][N],
+    double FFW[][N],
+    double BFW[][N],
     double SS[],
     double psi[][N]);
 
@@ -29,8 +29,8 @@ void calc_backward(
     int NUM_NODES[],
     int REGS[],
     double Q[],
-    double HALF_SIGMA_T[],
-    double MI_H[][N],
+    double FFW[][N],
+    double BFW[][N],
     double SS[],
     double psi[][N]);
 
