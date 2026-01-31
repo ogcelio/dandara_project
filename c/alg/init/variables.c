@@ -111,7 +111,7 @@ init_C0(
 {
     for (int i = 0; i < NUM_REGS; i++)
     {
-        c0[i] = SIGMA_T[i] / SIGMA_S0[i];
+        c0[i] = SIGMA_S0[i] / SIGMA_T[i];
     }
 }
 
