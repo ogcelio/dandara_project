@@ -1,4 +1,4 @@
-from numpy import zeros, exp, ndarray
+from numpy import exp, ndarray, zeros
 from numpy.linalg import inv
 
 
@@ -34,17 +34,15 @@ def calc_alfa(
 
             alfa_matrix[i][j] = eigenvectors[i][j] * exponential
 
-        # PARTE DE BAIXO DA MATRIZ
-        for i in range(N // 2, N):
-            for j in range(N):
-                if eigenvalues[j] < 0:
-                    exponential = 1
-                else:
-                    exponential = exp(
-                        (-SIGMA_T[reg] * H[index_reg]) / abs(eigenvalues[j])
-                    )
+    # PARTE DE BAIXO DA MATRIZ
+    for i in range(N // 2, N):
+        for j in range(N):
+            if eigenvalues[j] < 0:
+                exponential = 1
+            else:
+                exponential = exp((-SIGMA_T[reg] * H[index_reg]) / abs(eigenvalues[j]))
 
-                alfa_matrix[i][j] = eigenvectors[i][j] * exponential
+            alfa_matrix[i][j] = eigenvectors[i][j] * exponential
 
     inv_alfa_matrix = inv(alfa_matrix)
 
