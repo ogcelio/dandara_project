@@ -24,7 +24,7 @@ calc_eig(
         for (i = 0; i < N; i++)
         {
             inv_mi = 1 / MI[i];
-            c0_mi = -C0[r] * 0.5 * inv_mi;
+            c0_mi = -(C0[r] * 0.5 * inv_mi);
             for (j = 0; j < N; j++)
             {
                 A[i][j] = c0_mi * W[j];
@@ -34,16 +34,16 @@ calc_eig(
 
         LAPACKE_dgeev(
             LAPACK_ROW_MAJOR,
-            'N',
             'V',
+            'N',
             N,
             &A[0][0],
             N,
             eigenvalues[r],
             wi,
-            NULL,
-            N,
             &eigenvectors[r][0][0],
-            N);
+            N,
+            NULL,
+            1);
     }
 }
