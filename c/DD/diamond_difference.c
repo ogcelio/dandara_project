@@ -183,8 +183,9 @@ diamond_difference(char* DATA_PATH, char* OUTPUT_PATH)
     // ABSORPTION RATE
     double ABS_RATE[NUM_REGS];
     calc_abs_rate(
-        NUM_NODES,
+        TOTAL_NODES,
         NUM_REGS,
+        NUM_NODES,
         REGS,
         AVG_FI,
         H,

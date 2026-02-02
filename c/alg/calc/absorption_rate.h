@@ -9,8 +9,9 @@
 #define ABSORPTION_RATE_H
 
 void calc_abs_rate(
-    int NUM_NODES[],
     int NUM_REGS,
+    int TOTAL_NODES,
+    int NUM_NODES[],
     int REGS[],
     double AVG_FI[],
     double H[],

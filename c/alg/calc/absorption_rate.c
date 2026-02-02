@@ -9,13 +9,14 @@
 
 void
 calc_abs_rate(
-    int NUM_NODES[],
     int NUM_REGS,
+    int TOTAL_NODES,
+    int NUM_NODES[NUM_REGS],
     int REGS[NUM_REGS],
-    double AVG_FI[],
+    double AVG_FI[TOTAL_NODES + 1],
     double H[NUM_REGS],
-    double SIGMA_T[],
-    double SIGMA_S0[],
+    double SIGMA_T[NUM_REGS],
+    double SIGMA_S0[NUM_REGS],
     double abs_rate[NUM_REGS])
 {
     int i, j, num_nodes;
