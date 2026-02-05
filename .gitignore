@@ -1,2 +1,24 @@
-c/data/output.json
-main
+# CMake build artifacts
+build/
+Makefile
+cmake_install.cmake
+CMakeCache.txt
+CMakeFiles/
+
+# Executables
+cmd
+
+# Object and dependency files
+*.o
+*.d
+
+# Other CMake generated files
+*.cmake
+
+# Editor and OS generated files
+.DS_Store
+*.swp
+*~
+
+# Output file
+data/output.json
