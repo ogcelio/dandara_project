@@ -23,7 +23,7 @@ calc_scalar_flux(
     // for de j pode ser paralelizado
     for (int j = 0; j <= TOTAL_NODES; j++)
     {
-        double sum = 0;
+        double sum = 0.0;
 
         for (int m = 0; m < N; m++)
         {
