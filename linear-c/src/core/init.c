@@ -9,6 +9,7 @@
 #include "../../include/core/init.h"
 
 #include "../../include/core/common.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 double
@@ -22,6 +23,11 @@ double
     const long TOTAL_NUMS = TOTAL_NODES * N;
 
     double *psi = calloc(TOTAL_NUMS + N, sizeof(double));
+    if (!psi)
+    {
+        printf("Error in the memory allocation of the ANGULAR FLUX.");
+        return NULL;
+    }
 
     if (psi == NULL) return NULL;
 
@@ -41,6 +47,11 @@ double
     const double ESP_REGS[SCR NUM_REGS])
 {
     double *h = malloc(NUM_REGS * sizeof(double));
+    if (!h)
+    {
+        printf("Error in the memory allocation of the HEIGHT.");
+        return NULL;
+    }
 
     for (int r = 0; r < NUM_REGS; r++)
     {
@@ -60,6 +71,11 @@ double
     const double SIGMA_T[SCR NUM_REGS])
 {
     double *fw = malloc(NUM_REGS * N * sizeof(double));
+    if (!fw)
+    {
+        printf("Error in the memory allocation of the FOWARD WEIGHT.");
+        return NULL;
+    }
 
     double * restrict actual_fw = &fw[0];
 
@@ -91,6 +107,11 @@ double
     const double SIGMA_T[SCR NUM_REGS])
 {
     double *bw = malloc(NUM_REGS * N * sizeof(double));
+    if (!bw)
+    {
+        printf("Error in the memory allocation of the BACKWARD WEIGHT.");
+        return NULL;
+    }
 
     double * restrict actual_bw = &bw[0];
 
@@ -118,6 +139,12 @@ double
     const double SIGMA_S0[SCR NUM_REGS])
 {
     double *h_s0 = malloc(NUM_REGS * sizeof(double));
+    if (!h_s0)
+    {
+        printf("Error in the memory allocation of the HALF SIGMA S0.");
+        return NULL;
+    }
+
     for (int r = 0; r < NUM_REGS; r++)
     {
         h_s0[r] = SIGMA_S0[r] * 0.5;
