@@ -5,6 +5,9 @@
     SANDER, J. C. A. - 2026
 */
 
+// HEADER
+#include "../../include/methods/dd.h"
+
 // COMMON ALGORITHMS
 #include "../../include/calc/trivial_solution_test.h"
 #include "../../include/calc/quadrature.h"
