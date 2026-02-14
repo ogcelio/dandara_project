@@ -17,7 +17,6 @@
 #include "../../include/calc/escape_rate.h"
 #include "../../include/core/init.h"
 #include "../file/file_ops.h"
-#include <stdio.h>
 #include <stdlib.h>
 
 // MODIFIED SPECTRAL DETERMINISTIC METHODS
