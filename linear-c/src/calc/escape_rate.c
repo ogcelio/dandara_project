@@ -9,6 +9,7 @@
 #include "../../include/calc/escape_rate.h"
 
 #include "../../include/core/common.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -24,6 +25,11 @@ double
     const long TOTAL_NUMS = TOTAL_NODES * N;
 
     double *esc_rate = calloc(2, sizeof(double));
+    if (!esc_rate)
+    {
+        printf("Error in the memory allocation of the ESCAPE RATE.");
+        return NULL;
+    }
 
     for (int m = 0; m < HALF_N; m++)
     {

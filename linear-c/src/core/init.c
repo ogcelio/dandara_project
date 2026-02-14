@@ -166,3 +166,131 @@ total_nodes(
 
     return sum;
 }
+
+double
+*sigma_th(
+    const int NUM_REGS,
+    const double H[SCR NUM_REGS],
+    const double SIGMA_T[SCR NUM_REGS])
+{
+    double *sigma_th = malloc(NUM_REGS * sizeof(double));
+    if (!sigma_th)
+    {
+        printf("Error in the memory allocation of the SIGMA TH.");
+        return NULL;
+    }
+
+    for (int r = 0; r < NUM_REGS; r++)
+    {
+        sigma_th[r] = SIGMA_T[r] * H[r];
+    }
+
+    return sigma_th;
+}
+
+double
+*inv_sigma_th(
+    const int NUM_REGS,
+    const double SIGMA_TH[NUM_REGS])
+{
+    double *inv_sigma_th = malloc(NUM_REGS * sizeof(double));
+    if (!inv_sigma_th)
+    {
+        printf("Error in the memory allocation of the INVERSE OF SIGMA TH.");
+        return NULL;
+    }
+
+    for (int r = 0; r < NUM_REGS; r++)
+    {
+        inv_sigma_th[r] = 1 / SIGMA_TH[r];
+    }
+
+    return inv_sigma_th;
+}
+
+double
+*mi_h(
+    const int N,
+    const int HALF_N,
+    const int NUM_REGS,
+    const double MI[SCR N],
+    const double H[SCR NUM_REGS])
+{
+    double *mi_h = malloc(NUM_REGS * N * sizeof(double));
+    if (!mi_h)
+    {
+        printf("Error in the memory allocation of the MI H.");
+        return NULL;
+    }
+
+    double *inv_mi = malloc(HALF_N * sizeof(double));
+    if (!inv_mi)
+    {
+        printf("Error in the memory allocation of the INVERSE OF MI.");
+        free(mi_h);
+        return NULL;
+    }
+
+    for (int m = 0; m < HALF_N; m++)
+    {
+        inv_mi[m] = 1 / MI[m];
+    }
+
+    double * restrict curr_mih = &mi_h[0];
+
+    for (int r = 0; r < NUM_REGS; r++)
+    {
+        double h = H[r];
+        for (int m = 0; m < HALF_N; m++)
+        {
+            curr_mih[m] = h * inv_mi[m];
+
+            curr_mih[m + HALF_N] = curr_mih[m];
+        }
+
+        curr_mih += N;
+    }
+
+    free(inv_mi);
+
+    return mi_h;
+}
+
+double
+*lambda_to_nu(
+    const int N,
+    const int NUM_REGS,
+    const double LAMBDA[SCR (NUM_REGS * N)])
+{
+    const int TOTAL = NUM_REGS * N;
+
+    double *nu = malloc(TOTAL * sizeof(double));
+    if (!nu)
+    {
+        printf("Error in the memory allocation of NU");
+        return NULL;
+    }
+
+    for (int i = 0; i < TOTAL; i++)
+    {
+        nu[i] = 1 / LAMBDA[i];
+    }
+
+    return nu;
+}
+
+double
+*c0(
+    const int NUM_REGS,
+    const double SIGMA_S0[SCR NUM_REGS],
+    const double SIGMA_T[SCR NUM_REGS])
+{
+    double *c0 = malloc(NUM_REGS * sizeof(double));
+
+    for (int r = 0; r < NUM_REGS; r++)
+    {
+        c0[r] = SIGMA_S0[r] / SIGMA_T[r];
+    }
+
+    return c0;
+}

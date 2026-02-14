@@ -9,6 +9,7 @@
 #include "../../include/calc/absorption_rate.h"
 
 #include "../../include/core/common.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 double
@@ -23,6 +24,11 @@ double
     const double SIGMA_S0[SCR NUM_REGS])
 {
     double *abs_rate = malloc(NUM_REGS * sizeof(double));
+    if (!abs_rate)
+    {
+        printf("Error in the memory allocation of the ABSORPTION RATE.");
+        return NULL;
+    }
 
     int node = 0;
 

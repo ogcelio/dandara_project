@@ -46,4 +46,30 @@ int total_nodes(
     const int NUM_REGS,
     const int NUM_NODES[SCR NUM_REGS]);
 
+double *sigma_th(
+    const int NUM_REGS,
+    const double H[SCR NUM_REGS],
+    const double SIGMA_T[SCR NUM_REGS]);
+
+double *inv_sigma_th(
+    const int NUM_REGS,
+    const double SIGMA_TH[NUM_REGS]);
+
+double *mi_h(
+    const int N,
+    const int HALF_N,
+    const int NUM_REGS,
+    const double MI[SCR N],
+    const double H[SCR NUM_REGS]);
+
+double *lambda_to_nu(
+    const int N,
+    const int NUM_REGS,
+    const double LAMBDA[SCR (NUM_REGS * N)]);
+
+double *c0(
+    const int NUM_REGS,
+    const double SIGMA_S0[SCR NUM_REGS],
+    const double SIGMA_T[SCR NUM_REGS]);
+
 #endif
