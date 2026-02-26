@@ -20,19 +20,19 @@ calc_quadrature(
     double W[SCR N])
 {
     int M = N / 2;
-    int i, j;
-    double P1, P2, P3, DP, u, u1;
+    double DP, P3;
 
-    for (i = 1; i <= M; i++)
+    for (int i = 1; i <= M; i++)
     {
         // Estimativa inicial de Newton (da maior raiz para a menor positiva)
-        u = cos(M_PI * (i - 0.25) / (N + 0.5));
+        double u = cos(M_PI * (i - 0.25) / (N + 0.5));
 
         // Refinamento por Método de Newton
         while (1)
         {
-            P1 = 1.0; P2 = 0.0;
-            for (j = 0; j < N; j++)
+            double P1 = 1.0;
+            double P2 = 0.0;
+            for (int j = 0; j < N; j++)
             {
                 P3 = P2;
                 P2 = P1;
@@ -41,7 +41,7 @@ calc_quadrature(
 
             // Derivada do polinômio de Legendre
             DP = N * (u * P1 - P2) / (u * u - 1.0);
-            u1 = u;
+            double u1 = u;
             u = u1 - (P1 / DP);
 
             if (fabs(u - u1) < 1e-15) break;
