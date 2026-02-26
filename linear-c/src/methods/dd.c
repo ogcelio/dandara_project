@@ -119,7 +119,6 @@ diamond_difference(const char* DATA_PATH, const char* OUTPUT_PATH)
             N,
             TOTAL_NODES,
             NUM_REGS,
-            REGS,
             NUM_NODES,
             W,
             HALF_SIGMA_S0,
