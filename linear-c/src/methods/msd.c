@@ -206,7 +206,7 @@ modified_spectral_deterministic(const char* DATA_PATH, const char* OUTPUT_PATH)
 
     // ABSORPTION RATE
     double *ABS_RATE = abs_rate(NUM_REGS, TOTAL_NODES, NUM_NODES,
-                                REGS, AVG_FI, H, SIGMA_T, SIGMA_S0);
+                                AVG_FI, H, SIGMA_T, SIGMA_S0);
 
     double *ESCAPE_RATE = escape_rate(N, HALF_N, TOTAL_NODES, MI, W, psi);
 

@@ -17,7 +17,6 @@ double
     const int NUM_REGS,
     const int TOTAL_NODES,
     const int NUM_NODES[SCR NUM_REGS],
-    const int REGS[SCR NUM_REGS],
     const double AVG_FI[SCR TOTAL_NODES],
     const double H[SCR NUM_REGS],
     const double SIGMA_T[SCR NUM_REGS],
@@ -37,7 +36,8 @@ double
         double sigma_a = SIGMA_T[r] - SIGMA_S0[r];
 
         double sum = 0;
-        for (int j = 0; j < NUM_NODES[r]; j++, node++)
+        const int num_nodes = NUM_NODES[r];
+        for (int j = 0; j < num_nodes; j++, node++)
         {
             sum += AVG_FI[node];
         }

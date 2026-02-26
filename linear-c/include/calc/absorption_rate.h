@@ -14,7 +14,6 @@ double *abs_rate(
     const int NUM_REGS,
     const int TOTAL_NODES,
     const int NUM_NODES[SCR NUM_REGS],
-    const int REGS[SCR NUM_REGS],
     const double AVG_FI[SCR TOTAL_NODES],
     const double H[SCR NUM_REGS],
     const double SIGMA_T[SCR NUM_REGS],
