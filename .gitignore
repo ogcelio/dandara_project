@@ -22,3 +22,6 @@ cmd
 
 # Output file
 output.json
+
+# Rust build artifacts
+linear-rust/target/
