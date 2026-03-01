@@ -29,8 +29,6 @@ double
         return NULL;
     }
 
-    if (psi == NULL) return NULL;
-
     for (int m = 0; m < HALF_N; m++)
     {
         psi[m] = CCE;
