@@ -5,9 +5,7 @@
     SANDER, J. C. A. - 2026
 */
 
-fn calc_scalar_flux(w: &[f64], psi: &[f64], fi: &mut [f64]) {
-    let n = w.len();
-
+fn calc_scalar_flux(n: usize, w: &[f64], psi: &[f64], fi: &mut [f64]) {
     fi.iter_mut()
         .zip(psi.chunks_exact(n))
         .for_each(|(fi_x, psi_x)| {
