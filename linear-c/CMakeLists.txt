@@ -45,4 +45,7 @@ add_executable(exec_dd main/exec_dd.c ${COMMON_SOURCES} ${DD_SOURCES})
 target_link_libraries(exec_dd m)
 
 add_executable(exec_msd main/exec_msd.c ${COMMON_SOURCES} ${MSD_SOURCES})
-target_link_libraries(exec_msd m lapacke cblas lapack blas)
+target_link_libraries(exec_msd m lapacke lapack blas)
+
+find_package(BLAS REQUIRED)
+target_link_libraries(exec_msd ${BLAS_LIBRARIES})
