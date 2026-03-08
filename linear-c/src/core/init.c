@@ -20,9 +20,7 @@ double
     const double CCE,
     const double CCD)
 {
-    const long TOTAL_NUMS = TOTAL_NODES * N;
-
-    double *psi = calloc(TOTAL_NUMS + N, sizeof(double));
+    double* psi = calloc((TOTAL_NODES + 1) * N, sizeof(double));
     if (!psi)
     {
         printf("Error in the memory allocation of the ANGULAR FLUX.");
@@ -31,8 +29,8 @@ double
 
     for (int m = 0; m < HALF_N; m++)
     {
-        psi[m] = CCE;
-        psi[TOTAL_NUMS + m + HALF_N] = CCD;
+        psi[m * TOTAL_NODES] = CCE;
+        psi[(m + HALF_N) * TOTAL_NODES] = CCD;
     }
 
     return psi;
@@ -40,56 +38,128 @@ double
 
 double
 *height(
+    const int TOTAL_NODES,
     const int NUM_REGS,
     const int NUM_NODES[SCR NUM_REGS],
     const double ESP_REGS[SCR NUM_REGS])
 {
-    double *h = malloc(NUM_REGS * sizeof(double));
+    double* h = malloc(TOTAL_NODES * sizeof(double));
     if (!h)
     {
         printf("Error in the memory allocation of the HEIGHT.");
         return NULL;
     }
 
+    int node = 0;
     for (int r = 0; r < NUM_REGS; r++)
     {
-        h[r] = ESP_REGS[r] / NUM_NODES[r];
+        int num_nodes = NUM_NODES[r];
+        double h_reg = ESP_REGS[r] / NUM_NODES[r];
+
+        for (int j = 0; j < num_nodes; j++, node++)
+        {
+            h[node] = h_reg;
+        }
     }
 
     return h;
+}
+
+double*
+aligned_st(
+    const int TOTAL_NODES,
+    const int NUM_REGS,
+    const int NUM_NODES[SCR NUM_REGS],
+    const double SIGMA_T[SCR NUM_REGS])
+{
+    double* new_st = malloc(TOTAL_NODES * sizeof(double));
+    if (!new_st)
+    {
+        printf("Error in the memory allocation of the ALIGNED SIGMA T.");
+        return NULL;
+    }
+
+    int node = 0;
+    for (int r = 0; r < NUM_REGS; r++)
+    {
+        int num_nodes = NUM_NODES[r];
+        double st = SIGMA_T[r];
+
+        for (int j = 0; j < num_nodes; j++, node++)
+        {
+            new_st[node] = st;
+        }
+    }
+
+    return new_st;
+}
+
+double*
+aligned_q(
+    const int TOTAL_NODES,
+    const int NUM_REGS,
+    const int NUM_NODES[SCR NUM_REGS],
+    const double Q[SCR NUM_REGS])
+{
+    double* new_q = malloc(TOTAL_NODES * sizeof(double));
+    if (!new_q)
+    {
+        printf("Error in the memory allocation of the ALIGNED SIGMA T.");
+        return NULL;
+    }
+
+    int node = 0;
+    for (int r = 0; r < NUM_REGS; r++)
+    {
+        int num_nodes = NUM_NODES[r];
+        double q = Q[r];
+
+        for (int j = 0; j < num_nodes; j++, node++)
+        {
+            new_q[node] = q;
+        }
+    }
+
+    return new_q;
 }
 
 double
 *foward_weight(
     const int N,
     const int HALF_N,
-    const int NUM_REGS,
+    const int TOTAL_NODES,
     const double MI[SCR N],
-    const double H[SCR NUM_REGS],
-    const double SIGMA_T[SCR NUM_REGS])
+    const double H[SCR TOTAL_NODES],
+    const double SIGMA_T[SCR TOTAL_NODES])
 {
-    double *fw = malloc(NUM_REGS * N * sizeof(double));
+    double *fw = malloc(TOTAL_NODES * N * sizeof(double));
     if (!fw)
     {
         printf("Error in the memory allocation of the FOWARD WEIGHT.");
         return NULL;
     }
 
+    const int jump = (HALF_N + 1) * TOTAL_NODES;
+
+    const double * restrict actual_st = &SIGMA_T[0];
+    const double * restrict actual_h = &H[0];
     double * restrict actual_fw = &fw[0];
 
-    for (int r = 0; r < NUM_REGS; r++)
+    for (int m = 0; m < HALF_N; m++)
     {
-        double h_st = 0.5 * SIGMA_T[r];
-        double inv_h = 1 / H[r];
+        double mi = MI[m];
 
-        for (int m = 0; m < HALF_N; m++)
+        for (int j = 0; j < TOTAL_NODES; j++)
         {
-            actual_fw[m] = h_st - MI[m] * inv_h;
+            const double r = (0.5 * actual_st[j]) - (mi / actual_h[j]);
 
-            actual_fw[m + HALF_N] = h_st + MI[m + HALF_N] * inv_h;
+            actual_fw[j] = r;
+            actual_fw[jump - j] = r;
         }
 
-        actual_fw += N;
+        actual_fw += TOTAL_NODES;
+        actual_h += TOTAL_NODES;
+        actual_st += TOTAL_NODES;
     }
 
     return fw;
@@ -99,33 +169,39 @@ double
 *backward_weight(
     const int N,
     const int HALF_N,
-    const int NUM_REGS,
+    const int TOTAL_NODES,
     const double MI[SCR N],
-    const double H[SCR NUM_REGS],
-    const double SIGMA_T[SCR NUM_REGS])
+    const double H[SCR TOTAL_NODES],
+    const double SIGMA_T[SCR TOTAL_NODES])
 {
-    double *bw = malloc(NUM_REGS * N * sizeof(double));
+    double *bw = malloc(TOTAL_NODES * N * sizeof(double));
     if (!bw)
     {
-        printf("Error in the memory allocation of the BACKWARD WEIGHT.");
+        printf("Error in the memory allocation of the FOWARD WEIGHT.");
         return NULL;
     }
 
+    const int jump = (HALF_N + 1) * TOTAL_NODES;
+
+    const double * restrict actual_st = &SIGMA_T[0];
+    const double * restrict actual_h = &H[0];
     double * restrict actual_bw = &bw[0];
 
-    for (int r = 0; r < NUM_REGS; r++)
+    for (int m = 0; m < HALF_N; m++)
     {
-        double h_st = 0.5 * SIGMA_T[r];
-        double inv_h = 1 / H[r];
+        double mi = MI[m];
 
-        for (int m = 0; m < HALF_N; m++)
+        for (int j = 0; j < TOTAL_NODES; j++)
         {
-            actual_bw[m] = 1 / (h_st + MI[m] * inv_h);
+            const double r = 1 / ((0.5 * actual_st[j]) + (mi / actual_h[j]));
 
-            actual_bw[m + HALF_N] = 1 / (h_st - MI[m + HALF_N] * inv_h);
+            actual_bw[j] = r;
+            actual_bw[jump - j] = r;
         }
 
-        actual_bw += N;
+        actual_bw += TOTAL_NODES;
+        actual_h += TOTAL_NODES;
+        actual_st += TOTAL_NODES;
     }
 
     return bw;

@@ -18,25 +18,38 @@ double *angular_flux(
     const double CCD);
 
 double *height(
+    const int TOTAL_NODES,
     const int NUM_REGS,
     const int NUM_NODES[SCR NUM_REGS],
     const double ESP_REGS[SCR NUM_REGS]);
 
+double* aligned_st(
+    const int TOTAL_NODES,
+    const int NUM_REGS,
+    const int NUM_NODES[SCR NUM_REGS],
+    const double SIGMA_T[SCR NUM_REGS]);
+
+double* aligned_q(
+    const int TOTAL_NODES,
+    const int NUM_REGS,
+    const int NUM_NODES[SCR NUM_REGS],
+    const double Q[SCR NUM_REGS]);
+
 double *foward_weight(
     const int N,
     const int HALF_N,
-    const int NUM_REGS,
+    const int TOTAL_NODES,
     const double MI[SCR N],
-    const double H[SCR NUM_REGS],
-    const double SIGMA_T[SCR NUM_REGS]);
+    const double H[SCR TOTAL_NODES],
+    const double SIGMA_T[SCR TOTAL_NODES]);
 
 double *backward_weight(
     const int N,
     const int HALF_N,
-    const int NUM_REGS,
+    const int TOTAL_NODES,
     const double MI[SCR N],
-    const double H[SCR NUM_REGS],
-    const double SIGMA_T[SCR NUM_REGS]);
+    const double H[SCR TOTAL_NODES],
+    const double SIGMA_T[SCR TOTAL_NODES]);
 
 double *half_sigma_s0(
     const int NUM_REGS,
