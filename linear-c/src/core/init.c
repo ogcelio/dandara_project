@@ -95,6 +95,55 @@ aligned_st(
 }
 
 double*
+aligned_s0(
+    const int TOTAL_NODES,
+    const int NUM_REGS,
+    const int NUM_NODES[SCR NUM_REGS],
+    const double SIGMA_S0[SCR NUM_REGS])
+{
+    double* new_s0 = malloc(TOTAL_NODES * sizeof(double));
+    if (!new_s0)
+    {
+        printf("Error in the memory allocation of the ALIGNED SIGMA T.");
+        return NULL;
+    }
+
+    int node = 0;
+    for (int r = 0; r < NUM_REGS; r++)
+    {
+        int num_nodes = NUM_NODES[r];
+        double s0 = SIGMA_S0[r];
+
+        for (int j = 0; j < num_nodes; j++, node++)
+        {
+            new_s0[node] = s0;
+        }
+    }
+
+    return new_s0;
+}
+
+double
+*half_sigma_s0(
+    const int TOTAL_NODES,
+    const double SIGMA_S0[SCR TOTAL_NODES])
+{
+    double *h_s0 = malloc(TOTAL_NODES * sizeof(double));
+    if (!h_s0)
+    {
+        printf("Error in the memory allocation of the HALF SIGMA S0.");
+        return NULL;
+    }
+
+    for (int j = 0; j < TOTAL_NODES; j++)
+    {
+        h_s0[j] = SIGMA_S0[j] * 0.5;
+    }
+
+    return h_s0;
+}
+
+double*
 aligned_q(
     const int TOTAL_NODES,
     const int NUM_REGS,
@@ -205,26 +254,6 @@ double
     }
 
     return bw;
-}
-
-double
-*half_sigma_s0(
-    const int NUM_REGS,
-    const double SIGMA_S0[SCR NUM_REGS])
-{
-    double *h_s0 = malloc(NUM_REGS * sizeof(double));
-    if (!h_s0)
-    {
-        printf("Error in the memory allocation of the HALF SIGMA S0.");
-        return NULL;
-    }
-
-    for (int r = 0; r < NUM_REGS; r++)
-    {
-        h_s0[r] = SIGMA_S0[r] * 0.5;
-    }
-
-    return h_s0;
 }
 
 int
