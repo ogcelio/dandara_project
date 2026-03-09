@@ -29,6 +29,16 @@ double* aligned_st(
     const int NUM_NODES[SCR NUM_REGS],
     const double SIGMA_T[SCR NUM_REGS]);
 
+double* aligned_s0(
+    const int TOTAL_NODES,
+    const int NUM_REGS,
+    const int NUM_NODES[SCR NUM_REGS],
+    const double SIGMA_S0[SCR NUM_REGS]);
+
+double* half_sigma_s0(
+    const int TOTAL_NODES,
+    const double SIGMA_S0[SCR TOTAL_NODES]);
+
 double* aligned_q(
     const int TOTAL_NODES,
     const int NUM_REGS,
