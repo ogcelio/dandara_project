@@ -10,30 +10,13 @@
 #ifndef SWEEP_H
 #define SWEEP_H
 
-void calc_foward(
+void calc_sweep(
     const int N,
-    const int HALF_N,
     const int TOTAL_NODES,
-    const int NUM_REGS,
-    const int NUM_NODES[SCR NUM_REGS],
-    const int REGS[SCR NUM_REGS],
-    const double Q[SCR NUM_REGS],
-    const double FW[SCR (NUM_REGS * N)],
-    const double BW[SCR (NUM_REGS * N)],
+    const double Q[SCR TOTAL_NODES],
     const double SS[SCR TOTAL_NODES],
-    double psi[SCR ((TOTAL_NODES + 1) * N)]);
-
-void calc_backward(
-    const int N,
-    const int HALF_N,
-    const int TOTAL_NODES,
-    const int NUM_REGS,
-    const int NUM_NODES[SCR NUM_REGS],
-    const int REGS[SCR NUM_REGS],
-    const double Q[SCR NUM_REGS],
-    const double FW[SCR (NUM_REGS * N)],
-    const double BW[SCR (NUM_REGS * N)],
-    const double SS[SCR TOTAL_NODES],
+    const double FW[SCR (TOTAL_NODES * N)],
+    const double BW[SCR (TOTAL_NODES * N)],
     double psi[SCR ((TOTAL_NODES + 1) * N)]);
 
 #endif

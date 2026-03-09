@@ -15,23 +15,23 @@ calc_scalar_flux(
     const int N,
     const int TOTAL_NODES,
     const double W[SCR N],
-    const double psi[SCR ((TOTAL_NODES + 1) * N)],
+    const double psi[SCR (TOTAL_NODES * N)],
     double fi[SCR (TOTAL_NODES + 1)])
 {
-    const double * restrict actual_psi = &psi[0];
+    for (int _ = 0; _ < (TOTAL_NODES + 1); _++) {fi[_] = 0.0;}
 
-    // for de j pode ser paralelizado
-    for (int j = 0; j <= TOTAL_NODES; j++)
+    const double* restrict actual_psi = &psi[0];
+
+    for (int m = 0; m < N; m++)
     {
-        double sum = 0.0;
-
-        for (int m = 0; m < N; m++)
+        const double w = W[m];
+        for (int j = 0; j < (TOTAL_NODES + 1); j++)
         {
-            sum += W[m] * actual_psi[m];
+            fi[j] += w * actual_psi[j];
         }
 
-        fi[j] = 0.5 * sum;
-
-        actual_psi += N;
+        actual_psi += (TOTAL_NODES + 1);
     }
+
+    for (int _ = 0; _ < (TOTAL_NODES + 1); _++) {fi[_] *= 0.5;}
 }

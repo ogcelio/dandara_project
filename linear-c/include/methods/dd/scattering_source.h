@@ -13,10 +13,8 @@
 void calc_scattering_source(
     const int N,
     const int TOTAL_NODES,
-    const int NUM_REGS,
-    const int NUM_NODES[SCR NUM_REGS],
     const double W[SCR N],
-    const double HALF_SIGMA_S0[SCR NUM_REGS],
+    const double H_S0[SCR TOTAL_NODES],
     const double psim[SCR (TOTAL_NODES * N)],
     double ss[SCR TOTAL_NODES]);
 

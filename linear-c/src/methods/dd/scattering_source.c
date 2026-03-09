@@ -11,31 +11,24 @@ void
 calc_scattering_source(
     const int N,
     const int TOTAL_NODES,
-    const int NUM_REGS,
-    const int NUM_NODES[SCR NUM_REGS],
     const double W[SCR N],
-    const double HALF_SIGMA_S0[SCR NUM_REGS],
+    const double H_S0[SCR TOTAL_NODES],
     const double psim[SCR (TOTAL_NODES * N)],
     double ss[SCR TOTAL_NODES])
 {
-    int node = 0;
-    const double * restrict actual_psim = &psim[0];
-    for (int r = 0; r < NUM_REGS; r++)
+    for (int _ = 0; _ < TOTAL_NODES; _++) {ss[_] = 0.0;}
+
+    const double* restrict actual_psim = &psim[0];
+
+    for (int m = 0; m < N; m++)
     {
-        const int num_nodes = NUM_NODES[r];
-        const double h_s0 = HALF_SIGMA_S0[r];
-
-        for (int j = 0; j < num_nodes; j++, node++)
+        const double w = W[m];
+        for (int j = 0; j < TOTAL_NODES; j++)
         {
-            double sum = 0.0;
-
-            for (int n = 0; n < N; n++)
-            {
-                sum += W[n] * actual_psim[n];
-            }
-
-            ss[node] = h_s0 * sum;
-            actual_psim += N;
+            ss[j] += w * actual_psim[j];
         }
+        actual_psim += TOTAL_NODES;
     }
+
+    for (int _ = 0; _ < TOTAL_NODES; _++) {ss[_] *= H_S0[_];}
 }

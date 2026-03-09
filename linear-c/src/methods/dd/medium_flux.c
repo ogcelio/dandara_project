@@ -14,19 +14,17 @@ calc_medium_flux(
     const double psi[SCR (TOTAL_NODES + 1) * N],
     double psim[SCR (TOTAL_NODES * N)])
 {
-    const double * restrict plus_half = &psi[N];
-    const double * restrict minus_half = &psi[0];
+    const double * restrict actual_psi = &psi[0];
     double * restrict actual_psim = &psim[0];
 
-    for (int j = 0; j < TOTAL_NODES; j++)
+    for (int m = 0; m < N; m++)
     {
-        for (int m = 0; m < N; m++)
+        for (int j = 0; j < TOTAL_NODES; j++)
         {
-            actual_psim[m] = 0.5 * (plus_half[m] + minus_half[m]);
+            actual_psim[m] = 0.5 * (actual_psi[j] + actual_psi[j + 1]);
         }
 
-        plus_half += N;
-        minus_half += N;
-        actual_psim += N;
+        actual_psim += TOTAL_NODES;
+        actual_psi += (TOTAL_NODES + 1);
     }
 }
