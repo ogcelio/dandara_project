@@ -50,11 +50,11 @@ diamond_difference(const char* DATA_PATH, const char* OUTPUT_PATH)
 
         double ESCAPE_RATE[2] = {0};
 
-        double *ABS_RATE = calloc(NUM_REGS, sizeof(double));
+        double* ABS_RATE = calloc(NUM_REGS, sizeof(double));
 
-        double *PSI = angular_flux(N, N / 2, TOTAL_NODES, CCE, CCD);
+        double* PSI = angular_flux(N, N / 2, TOTAL_NODES, CCE, CCD);
 
-        double *FINAL_FI = calloc(TOTAL_NODES, sizeof(double));
+        double* FINAL_FI = calloc(TOTAL_NODES, sizeof(double));
 
         // SAVING OUTPUT
         SAVE_OUTPUT(
@@ -80,17 +80,23 @@ diamond_difference(const char* DATA_PATH, const char* OUTPUT_PATH)
 
     unsigned TOTAL_NODES = total_nodes(NUM_REGS, NUM_NODES);
 
-    double *MI = malloc(N * sizeof(double));
-    double *W = malloc(N * sizeof(double));
+    double* MI = malloc(N * sizeof(double));
+    double* W = malloc(N * sizeof(double));
     calc_quadrature(N, MI, W);
 
-    double *H = height(NUM_REGS, NUM_NODES, ESP_REGS);
+    double* H = height(TOTAL_NODES, NUM_REGS, NUM_NODES, ESP_REGS);
 
-    double *HALF_SIGMA_S0 = half_sigma_s0(NUM_REGS, SIGMA_S0);
+    double* ALIGNED_Q = aligned_q(TOTAL_NODES, NUM_REGS, NUM_NODES, Q);
 
-    double *FW = foward_weight(N, HALF_N, NUM_REGS, MI, H, SIGMA_T);
+    double* ALIGNED_ST = aligned_st(TOTAL_NODES, NUM_REGS, NUM_NODES, SIGMA_T);
 
-    double *BW = backward_weight(N, HALF_N, NUM_REGS, MI, H, SIGMA_T);
+    double* ALIGNED_S0 = aligned_s0(TOTAL_NODES, NUM_REGS, NUM_NODES, SIGMA_S0);
+
+    double* HALF_SIGMA_S0 = half_sigma_s0(TOTAL_NODES, ALIGNED_S0);
+
+    double* FW = foward_weight(N, HALF_N, TOTAL_NODES, MI, H, ALIGNED_ST);
+
+    double* BW = backward_weight(N, HALF_N, TOTAL_NODES, MI, H, ALIGNED_ST);
 
     // INITIALIZING VARIABLES
     unsigned iteration = 0;
@@ -118,8 +124,6 @@ diamond_difference(const char* DATA_PATH, const char* OUTPUT_PATH)
         calc_scattering_source(
             N,
             TOTAL_NODES,
-            NUM_REGS,
-            NUM_NODES,
             W,
             HALF_SIGMA_S0,
             psim,
@@ -128,34 +132,9 @@ diamond_difference(const char* DATA_PATH, const char* OUTPUT_PATH)
         /*
          * SWEEP
          */
+        
+        calc_sweep(N, TOTAL_NODES, ALIGNED_Q, ss, FW, BW, psi);
 
-        // FOWARD
-        calc_foward(
-             N,
-             HALF_N,
-             TOTAL_NODES,
-             NUM_REGS,
-             NUM_NODES,
-             REGS,
-             Q,
-             FW,
-             BW,
-             ss,
-             psi);
-
-        // BACKWARD
-        calc_backward(
-             N,
-             HALF_N,
-             TOTAL_NODES,
-             NUM_REGS,
-             NUM_NODES,
-             REGS,
-             Q,
-             FW,
-             BW,
-             ss,
-             psi);
 
         // FINAL SCALAR FLUXES
         calc_scalar_flux(N, TOTAL_NODES, W, psi, final_fi);
@@ -177,13 +156,15 @@ diamond_difference(const char* DATA_PATH, const char* OUTPUT_PATH)
 
     // AVERAGE SCALAR FLUXES
     double *AVG_FI = malloc(TOTAL_NODES * sizeof(double));
-    calc_scalar_flux(N, TOTAL_NODES - 1, W, psim, AVG_FI);
+    //calc_scalar_flux(N, TOTAL_NODES - 1, W, psim, AVG_FI);
 
     // ABSORPTION RATE
-    double *ABS_RATE = abs_rate(NUM_REGS, TOTAL_NODES, NUM_NODES,
-                                AVG_FI, H, SIGMA_T, SIGMA_S0);
+    //double *ABS_RATE = abs_rate(NUM_REGS, TOTAL_NODES, NUM_NODES, AVG_FI, H, SIGMA_T, SIGMA_S0);
 
-    double *ESCAPE_RATE = escape_rate(N, HALF_N, TOTAL_NODES, MI, W, psi);
+    //double *ESCAPE_RATE = escape_rate(N, HALF_N, TOTAL_NODES, MI, W, psi);
+    double ESCAPE_RATE[2] = {0};
+
+    double* ABS_RATE = calloc(NUM_REGS, sizeof(double));
 
     // SAVING OUTPUT
     SAVE_OUTPUT(
@@ -211,7 +192,7 @@ diamond_difference(const char* DATA_PATH, const char* OUTPUT_PATH)
     free(ss);
     free(AVG_FI);
     free(ABS_RATE);
-    free(ESCAPE_RATE);
+    //free(ESCAPE_RATE);
 
     return 0;
 }
