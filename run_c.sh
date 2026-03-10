@@ -12,13 +12,13 @@ benchmark() {
     for ((i=1; i<=iterations; i++)); do
         # Record start time in nanoseconds
         start=$(date +%s%N)
-        
+
         # Execute binary and suppress output
         $cmd > /dev/null 2>&1
-        
+
         # Record end time
         end=$(date +%s%N)
-        
+
         # Calculate delta
         delta=$((end - start))
         total_time=$((total_time + delta))
