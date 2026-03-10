@@ -12,6 +12,7 @@
 
 void calc_scalar_flux(
     const int N,
+    const int HALF_N,
     const int TOTAL_NODES,
     const double W[SCR N],
     const double psi[SCR (TOTAL_NODES * N)],

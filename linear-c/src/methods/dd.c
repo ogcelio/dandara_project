@@ -112,7 +112,7 @@ diamond_difference(const char* DATA_PATH, const char* OUTPUT_PATH)
     double *ss = malloc(TOTAL_NODES * sizeof(double));
 
     // INITIAL SCALAR FLUXES
-    calc_scalar_flux(N, TOTAL_NODES, W, psi, initial_fi);
+    calc_scalar_flux(HALF_N, N, TOTAL_NODES, W, psi, initial_fi);
 
     // MAIN ROUTINE
     while (1)
@@ -137,7 +137,7 @@ diamond_difference(const char* DATA_PATH, const char* OUTPUT_PATH)
 
 
         // FINAL SCALAR FLUXES
-        calc_scalar_flux(N, TOTAL_NODES, W, psi, final_fi);
+        calc_scalar_flux(HALF_N, N, TOTAL_NODES, W, psi, final_fi);
 
         iteration += 1;
 
