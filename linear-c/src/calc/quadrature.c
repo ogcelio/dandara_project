@@ -19,7 +19,7 @@ calc_quadrature(
     double MI[SCR N],
     double W[SCR N])
 {
-    int M = N / 2;
+    const int M = N / 2;
     double DP, P3;
 
     for (int i = 1; i <= M; i++)
@@ -47,7 +47,7 @@ calc_quadrature(
             if (fabs(u - u1) < 1e-15) break;
         }
 
-        double peso = 2.0 / ((1.0 - u * u) * (DP * DP));
+        const double peso = 2.0 / ((1.0 - u * u) * (DP * DP));
 
         // Atribui o peso e a raiz no mesmo índice
         MI[M - i] = u;       // Raiz positiva
