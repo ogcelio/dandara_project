@@ -43,7 +43,7 @@ diamond_difference(const char* DATA_PATH, const char* OUTPUT_PATH)
         ESP_REGS);
 
     // TRIVIAL SOLUTION TEST
-    if (trivial_solution_test(NUM_REGS, REGS, CCE, CCD, Q))
+    if (trivial_solution_test(NUM_REGS, CCE, CCD, Q))
     {
         // INITIALING CONST WITH 0s
         unsigned TOTAL_NODES = total_nodes(NUM_REGS, NUM_NODES);
@@ -136,7 +136,6 @@ diamond_difference(const char* DATA_PATH, const char* OUTPUT_PATH)
              TOTAL_NODES,
              NUM_REGS,
              NUM_NODES,
-             REGS,
              Q,
              FW,
              BW,
@@ -150,7 +149,6 @@ diamond_difference(const char* DATA_PATH, const char* OUTPUT_PATH)
              TOTAL_NODES,
              NUM_REGS,
              NUM_NODES,
-             REGS,
              Q,
              FW,
              BW,
